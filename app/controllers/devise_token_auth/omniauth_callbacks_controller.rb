@@ -94,7 +94,7 @@ module DeviseTokenAuth
       end
     end
 
-    def resource_class(mapping = nil)
+    def dta_resource_class(mapping = nil)
       if omniauth_params['resource_class']
         omniauth_params['resource_class'].constantize
       elsif params['resource_class']
@@ -105,7 +105,7 @@ module DeviseTokenAuth
     end
 
     def resource_name
-      resource_class
+      dta_resource_class
     end
 
     def omniauth_window_type
@@ -216,7 +216,7 @@ module DeviseTokenAuth
 
     def get_resource_from_auth_hash
       # find or create user by provider and provider uid
-      @resource = resource_class.where(
+      @resource = dta_resource_class.where(
         uid: auth_hash['uid'],
         provider: auth_hash['provider']
       ).first_or_initialize

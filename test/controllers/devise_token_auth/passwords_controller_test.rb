@@ -195,7 +195,7 @@ class DeviseTokenAuth::PasswordsControllerTest < ActionController::TestCase
 
         describe 'case-insensitive email' do
           before do
-            @resource_class = User
+            @dta_resource_class = User
             @request_params = {
               email:        @resource.email.upcase,
               redirect_url: @redirect_url
@@ -203,13 +203,13 @@ class DeviseTokenAuth::PasswordsControllerTest < ActionController::TestCase
           end
 
           test 'response should return success status if configured' do
-            @resource_class.case_insensitive_keys = [:email]
+            @dta_resource_class.case_insensitive_keys = [:email]
             post :create, params: @request_params
             assert_equal 200, response.status
           end
 
           test 'response should return failure status if not configured' do
-            @resource_class.case_insensitive_keys = []
+            @dta_resource_class.case_insensitive_keys = []
             post :create, params: @request_params
             assert_equal 404, response.status
           end
