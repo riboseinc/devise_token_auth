@@ -170,6 +170,13 @@ module DeviseTokenAuth
       params.permit(*params_for_resource(:account_update))
     end
 
+    def with_reset_password_token token
+      recoverable = dta_resource_class.with_reset_password_token(token)
+
+      recoverable.reset_password_token = token if recoverable && recoverable.reset_password_token.present?
+      recoverable
+    end
+
     def render_not_found_error
       render_error(404, I18n.t('devise_token_auth.passwords.user_not_found', email: @email))
     end

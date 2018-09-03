@@ -4,7 +4,7 @@ module DeviseTokenAuth
   class ConfirmationsController < DeviseTokenAuth::ApplicationController
 
     def show
-      @resource = resource_class.confirm_by_token(params[:confirmation_token])
+      @resource = dta_resource_class.confirm_by_token(params[:confirmation_token])
 
       if @resource.errors.empty?
         yield @resource if block_given?
