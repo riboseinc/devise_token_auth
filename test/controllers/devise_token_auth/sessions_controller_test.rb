@@ -232,7 +232,7 @@ class DeviseTokenAuth::SessionsControllerTest < ActionController::TestCase
 
       describe 'case-insensitive email' do
         before do
-          @resource_class = User
+          @dta_resource_class = User
           @request_params = {
             email: @existing_user.email.upcase,
             password: @existing_user.password
@@ -240,13 +240,13 @@ class DeviseTokenAuth::SessionsControllerTest < ActionController::TestCase
         end
 
         test 'request should succeed if configured' do
-          @resource_class.case_insensitive_keys = [:email]
+          @dta_resource_class.case_insensitive_keys = [:email]
           post :create, params: @request_params
           assert_equal 200, response.status
         end
 
         test 'request should fail if not configured' do
-          @resource_class.case_insensitive_keys = []
+          @dta_resource_class.case_insensitive_keys = []
           post :create, params: @request_params
           assert_equal 401, response.status
         end
@@ -254,7 +254,7 @@ class DeviseTokenAuth::SessionsControllerTest < ActionController::TestCase
 
       describe 'stripping whitespace on email' do
         before do
-          @resource_class = User
+          @dta_resource_class = User
           @request_params = {
             # adding whitespace before and after email
             email: " #{@existing_user.email}  ",
@@ -263,13 +263,13 @@ class DeviseTokenAuth::SessionsControllerTest < ActionController::TestCase
         end
 
         test 'request should succeed if configured' do
-          @resource_class.strip_whitespace_keys = [:email]
+          @dta_resource_class.strip_whitespace_keys = [:email]
           post :create, params: @request_params
           assert_equal 200, response.status
         end
 
         test 'request should fail if not configured' do
-          @resource_class.strip_whitespace_keys = []
+          @dta_resource_class.strip_whitespace_keys = []
           post :create, params: @request_params
           assert_equal 401, response.status
         end

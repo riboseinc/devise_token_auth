@@ -87,8 +87,8 @@ class OmniauthTest < ActionDispatch::IntegrationTest
       before do
         get_success
       end
-      test 'request should determine the correct resource_class' do
-        assert_equal 'User', controller.send(:omniauth_params)['resource_class']
+      test 'request should determine the correct dta_resource_class' do
+        assert_equal 'User', controller.send(:omniauth_params)['dta_resource_class']
       end
 
       test 'user should be of the correct class' do
@@ -110,8 +110,8 @@ class OmniauthTest < ActionDispatch::IntegrationTest
         @resource = assigns(:resource)
       end
 
-      test 'request should determine the correct resource_class' do
-        assert_equal 'Mang', controller.send(:omniauth_params)['resource_class']
+      test 'request should determine the correct dta_resource_class' do
+        assert_equal 'Mang', controller.send(:omniauth_params)['dta_resource_class']
       end
 
       test 'user should be of the correct class' do

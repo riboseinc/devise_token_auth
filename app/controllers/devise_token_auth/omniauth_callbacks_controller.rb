@@ -10,7 +10,7 @@ module DeviseTokenAuth
     # not support multiple models, so we must resort to this terrible hack.
     def redirect_callbacks
 
-      # derive target redirect route from 'resource_class' param, which was set
+      # derive target redirect route from 'dta_resource_class' param, which was set
       # before authentication.
       devise_mapping = get_devise_mapping
       redirect_route = get_redirect_route(devise_mapping)
@@ -30,10 +30,10 @@ module DeviseTokenAuth
     end
 
     def get_devise_mapping
-       # derive target redirect route from 'resource_class' param, which was set
+       # derive target redirect route from 'dta_resource_class' param, which was set
        # before authentication.
        devise_mapping = [request.env['omniauth.params']['namespace_name'],
-                         request.env['omniauth.params']['resource_class'].underscore.gsub('/', '_')].compact.join('_')
+                         request.env['omniauth.params']['dta_resource_class'].underscore.gsub('/', '_')].compact.join('_')
     rescue NoMethodError => err
       default_devise_mapping
     end
@@ -93,7 +93,7 @@ module DeviseTokenAuth
           @_omniauth_params ||= session.delete('dta.omniauth.params')
           @_omniauth_params
         elsif params['omniauth_window_type']
-          @_omniauth_params = params.slice('omniauth_window_type', 'auth_origin_url', 'resource_class', 'origin')
+          @_omniauth_params = params.slice('omniauth_window_type', 'auth_origin_url', 'dta_resource_class', 'origin')
         else
           @_omniauth_params = {}
         end
@@ -119,18 +119,18 @@ module DeviseTokenAuth
       end
     end
 
-    def resource_class(mapping = nil)
-      if omniauth_params['resource_class']
-        omniauth_params['resource_class'].constantize
-      elsif params['resource_class']
-        params['resource_class'].constantize
+    def dta_resource_class(mapping = nil)
+      if omniauth_params['dta_resource_class']
+        omniauth_params['dta_resource_class'].constantize
+      elsif params['dta_resource_class']
+        params['dta_resource_class'].constantize
       else
-        raise 'No resource_class found'
+        raise 'No dta_resource_class found'
       end
     end
 
     def resource_name
-      resource_class
+      dta_resource_class
     end
 
     def omniauth_window_type
@@ -240,7 +240,7 @@ module DeviseTokenAuth
 
     def get_resource_from_auth_hash
       # find or create user by provider and provider uid
-      @resource = resource_class.where(
+      @resource = dta_resource_class.where(
         uid: auth_hash['uid'],
         provider: auth_hash['provider']
       ).first_or_initialize

@@ -250,7 +250,7 @@ class DeviseTokenAuth::RegistrationsControllerTest < ActionDispatch::Integration
 
     describe 'case-insensitive email' do
       before do
-        @resource_class = User
+        @dta_resource_class = User
         @request_params = {
           email: 'AlternatingCase@example.com',
           password: 'secret123',
@@ -260,7 +260,7 @@ class DeviseTokenAuth::RegistrationsControllerTest < ActionDispatch::Integration
       end
 
       test 'success should downcase uid if configured' do
-        @resource_class.case_insensitive_keys = [:email]
+        @dta_resource_class.case_insensitive_keys = [:email]
         post '/auth', params: @request_params
         assert_equal 200, response.status
         @data = JSON.parse(response.body)
@@ -268,7 +268,7 @@ class DeviseTokenAuth::RegistrationsControllerTest < ActionDispatch::Integration
       end
 
       test 'request should not downcase uid if not configured' do
-        @resource_class.case_insensitive_keys = []
+        @dta_resource_class.case_insensitive_keys = []
         post '/auth', params: @request_params
         assert_equal 200, response.status
         @data = JSON.parse(response.body)
@@ -490,7 +490,7 @@ class DeviseTokenAuth::RegistrationsControllerTest < ActionDispatch::Integration
           describe 'success' do
             before do
               # test valid update param
-              @resource_class = User
+              @dta_resource_class = User
               @new_operating_thetan = 1_000_000
               @email = 'AlternatingCase2@example.com'
               @request_params = {
@@ -505,7 +505,7 @@ class DeviseTokenAuth::RegistrationsControllerTest < ActionDispatch::Integration
             end
 
             test 'Case sensitive attributes update' do
-              @resource_class.case_insensitive_keys = []
+              @dta_resource_class.case_insensitive_keys = []
               put '/auth', params: @request_params, headers: @auth_headers
               @data = JSON.parse(response.body)
               @existing_user.reload
@@ -516,7 +516,7 @@ class DeviseTokenAuth::RegistrationsControllerTest < ActionDispatch::Integration
             end
 
             test 'Case insensitive attributes update' do
-              @resource_class.case_insensitive_keys = [:email]
+              @dta_resource_class.case_insensitive_keys = [:email]
               put '/auth', params: @request_params, headers: @auth_headers
               @data = JSON.parse(response.body)
               @existing_user.reload
@@ -597,7 +597,7 @@ class DeviseTokenAuth::RegistrationsControllerTest < ActionDispatch::Integration
           describe 'success without password update' do
             before do
               # test valid update param
-              @resource_class = User
+              @dta_resource_class = User
               @new_operating_thetan = 1_000_000
               @email = 'AlternatingCase2@example.com'
               @request_params = {

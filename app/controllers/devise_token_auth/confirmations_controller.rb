@@ -4,7 +4,7 @@ module DeviseTokenAuth
   class ConfirmationsController < DeviseTokenAuth::ApplicationController
 
     def show
-      @resource = resource_class.confirm_by_token(resource_params[:confirmation_token])
+      @resource = dta_resource_class.confirm_by_token(resource_params[:confirmation_token])
 
       if @resource.errors.empty?
         yield @resource if block_given?
@@ -34,7 +34,7 @@ module DeviseTokenAuth
 
       @email = get_case_insensitive_field_from_resource_params(:email)
 
-      @resource = resource_class.dta_find_by(uid: @email, provider: provider)
+      @resource = dta_resource_class.dta_find_by(uid: @email, provider: provider)
 
       return render_not_found_error unless @resource
 
